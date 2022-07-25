@@ -11,6 +11,8 @@ router.post('/createOrder', ordersController.order_create_order);
 
 router.delete('/:orderId', ordersController.order_delete);
 
-router.put('/orderCancel/:id', ordersController.order_cancel_order);
+router.put('/orderConfirm/:orderId', ordersController.order_confirmed_order);
+
+router.put('/orderCancel/:orderId', ordersController.order_cancel_order);
 
 module.exports = router;

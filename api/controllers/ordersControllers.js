@@ -48,11 +48,11 @@ exports.order_create_order = async (req, res, next) => {
 };
 
 exports.order_cancel_order = async (req, res, next) => {
-  const { id } = req.params;
+  const { orderId } = req.params;
 
   try {
     const order = await Order.findByIdAndUpdate(
-      { _id: id },
+      { _id: orderId },
       {
         $set: {
           orderStatus: 'CANCELLED',
@@ -61,6 +61,38 @@ exports.order_cancel_order = async (req, res, next) => {
       { new: true }
     );
     res.status(200).json({ order });
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
+
+exports.order_confirmed_order = async (req, res, next) => {
+  const { orderId } = req.params;
+
+  try {
+    const order = await Order.findByIdAndUpdate(
+      { _id: orderId },
+      {
+        $set: {
+          orderStatus: 'CONFIRMED',
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({ order });
+    // console.log(order);
+
+    setTimeout(async () => {
+      await Order.findByIdAndUpdate(
+        { _id: orderId },
+        {
+          $set: {
+            orderStatus: 'DELIVERED',
+          },
+        },
+        { new: true }
+      );
+    }, 5000);
   } catch (err) {
     res.status(400).json({ err });
   }
