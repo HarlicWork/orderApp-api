@@ -61,7 +61,7 @@ exports.order_create_order = async (req, res, next) => {
 };
 
 exports.order_cancel_order = async (req, res, next) => {
-  const { orderId } = req.params;
+  const { orderId } = req.body;
 
   try {
     const order = await Order.findByIdAndUpdate(
@@ -80,7 +80,7 @@ exports.order_cancel_order = async (req, res, next) => {
 };
 
 exports.order_deliver_order = async (req, res, next) => {
-  const { orderId } = req.params;
+  const { orderId } = req.body;
 
   try {
     const order = await Order.findByIdAndUpdate(
@@ -116,35 +116,6 @@ exports.order_confirmed_order = async (req, res, next) => {
 
     axios
       .post(process.env.API_PAYMENT, { orderId, paymentType })
-      .then((response) => {
-        paymentStatus = JSON.stringify(response.data.paymentStatus);
-        console.log(paymentStatus);
-        // if (paymentStatus == 'SUCCESS') {
-        //   setTimeout(async () => {
-        //     await Order.findByIdAndUpdate(
-        //       { _id: orderId },
-        //       {
-        //         $set: {
-        //           orderStatus: 'DELIVERED',
-        //         },
-        //       },
-        //       { new: true }
-        //     );
-        //   }, 1000);
-        // } else {
-        //   setTimeout(async () => {
-        //     await Order.findByIdAndUpdate(
-        //       { _id: orderId },
-        //       {
-        //         $set: {
-        //           orderStatus: 'CANCELLED',
-        //         },
-        //       },
-        //       { new: true }
-        //     );
-        //   }, 1000);
-        // }
-      })
       .catch((err) => {
         res.status(500).json({
           error: err,

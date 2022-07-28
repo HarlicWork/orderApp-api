@@ -13,6 +13,8 @@ router.delete('/:orderId', ordersController.order_delete);
 
 router.put('/orderConfirm', ordersController.order_confirmed_order);
 
-router.put('/orderCancel/:orderId', ordersController.order_cancel_order);
+router.put('/orderCancel', ordersController.order_cancel_order);
+
+router.put('/orderDeliver', ordersController.order_deliver_order);
 
 module.exports = router;
