@@ -25,11 +25,11 @@ exports.order_get_by_id = async (req, res, next) => {
 };
 
 exports.order_create_order = async (req, res, next) => {
-  const { owner } = req.body;
+  const { ownerId } = req.body;
   try {
     const newOrder = new Order({
       _id: new mongoose.Types.ObjectId(),
-      owner,
+      ownerId,
       createdAt: new Date().toISOString(),
     });
 
