@@ -126,38 +126,13 @@ exports.users_login = async (req, res, next) => {
       if (auth) {
         const token = createToken(user._id);
         res.cookie('jwt', token, { httpOnly: true, maxAge: tokenAge * 1000 });
-        res.status(200).json({ user: user._id, userName: user.userName, authToken: token });
+        res
+          .status(200)
+          .json({ user: user._id, userName: user.userName, authToken: token });
       }
     }
   } catch (err) {
     // error handler
-    const errors = handleErrors(err);
-    res.status(400).json({ errors });
-  }
-};
-
-exports.users_update = async (req, res, next) => {
-  const { id } = req.params;
-  const { email, password, userName, phoneNumber, skillsets, hobbies } =
-    req.body;
-
-  try {
-    const user = await User.findByIdAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          email: email,
-          password: password,
-          userName: userName,
-          phoneNumber: phoneNumber,
-          skillsets: skillsets,
-          hobbies: hobbies,
-        },
-      },
-      { new: true }
-    );
-    res.status(200).json({ user });
-  } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
